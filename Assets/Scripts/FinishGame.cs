@@ -1,25 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class FinishGame : MonoBehaviour
 {
     [SerializeField] GameObject player;
-    void Start()
-    {
+    [SerializeField] ParticleSystem finishEffect;
+    [SerializeField] float finishGameDaley = 2f;
 
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Player")
+        {
+            finishEffect.Play();
+            GetComponent<AudioSource>().Play();
+            Invoke("ReloadScene", finishGameDaley);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    void ReloadScene()
     {
-
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        Debug.Log("Level Finished");
-
-        player.transform.position = new Vector3(0.34f, 2.36f, 0);
+        SceneManager.LoadScene(0);
     }
 }
